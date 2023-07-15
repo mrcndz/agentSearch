@@ -1,0 +1,2 @@
+# agentSearch
+This project involves implementing different search strategies (Breadth-First, Depth-First, Uniform Cost, Greedy, and A*) in a discrete and observable environment. The environment is generated randomly with four types of terrain: obstacles, low-cost terrain (sand), medium-cost terrain (mud), and high-cost terrain (water). The objective is for an agent to collect food placed randomly in the environment. The agent performs the chosen search algorithm to find the food, generates a path, and moves towards it at different speeds based on the terrain cost.
