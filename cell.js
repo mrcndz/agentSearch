@@ -8,6 +8,7 @@ class Cell{
         this.type = type;
         this.isSelected = false;
         this.isPressed = false;
+        this.strokeColor = "#ffffff";
     }
 
     draw(){
@@ -44,7 +45,7 @@ class Cell{
             fill("#ffffff1f");
 
             if(mouseIsPressed){
-                fill("#ffffff60");
+                fill("stroke");
                 this.isPressed = true;
                 mouseIsPressed = false;
                 this.cycleSelected();
@@ -58,7 +59,7 @@ class Cell{
         if (this.isSelected){
             noFill();
             strokeWeight(2);
-            stroke("this.strokeColor");
+            stroke(this.strokeColor);
             rect(this.x, this.y, this.size, this.size);
             noStroke();
         }

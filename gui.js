@@ -23,34 +23,29 @@ var isEnableBtQ;
 var isEnableBtO;
 
 const STYLE_RED = {
-  background: '#f00',
+  background: '#b711118b',
   color: '#000',
 }
 
 const STYLE_GREEN = {
-  background: '#0f0',
-  color: '#000',
-}
-
-const STYLE_YELLOW = {
-  background: '#ff0',
+  background: '#1ca817a5',
   color: '#000',
 }
 
 const STYLE_BLUE = {
-  background: '#00f',
+  background: '#290bd18b',
   color: '#FFF'
 }
 
 function setupGui(){
 
-  let distance = 10;
+  let distance = 5;
 
   // Botão de começar
   btStartCt = 'Start'
   btStart = new Button({
-    x: width/2 + distance + 100, y: 30,
-    width: 100, height: 50,
+    x: width/2 + distance + 30, y: 30,
+    width: 60, height: 50,
     align_x: 0, align_y: 0,
     content: 'Start',
     on_press() {
@@ -69,33 +64,11 @@ function setupGui(){
   });
   btStart.style('default', STYLE_GREEN);
 
-  // Botão de escolha de Terreno
-    btTerrainBl = false;
-    btTerrain = new Button({
-      x: width/2 - distance - 100, y: 30,
-      width: 100, height: 50,
-      align_x: 0, align_y: 0,
-      content: 'Terrain',
-      on_press() {
-        if(btTerrainBl == true){
-          btTerrainBl  = false;
-          btTerrain.style('default', STYLE_YELLOW);
-          btTerrain.text('Terrain')
-        }
-        else{
-          btTerrainBl  = true;
-          btTerrain.style('default', STYLE_PRESSED);
-          btTerrain.text('Hide')
-        }
-      }
-  });
-  btTerrain.style('default', STYLE_YELLOW)
-
   // Botão de gerar novo terreno
   btGenerateBl = true;
   btGenerate = new Button({
-    x: width/2, y: 30,
-    width: 100, height: 50,
+    x: width/2 - distance - 60, y: 30,
+    width: 60, height: 50,
     align_x: 0, align_y: 0,
     content: 'Generate',
     on_press() {
