@@ -1,17 +1,20 @@
 class Grid {
   constructor(size) {
-    this.cells = [];
+    // this.cells = [];
     this.size = size;
     this.n = width / size;
+    this.cells;
     this.createCells();
+    this.time = 0;
   }
 
-  draw() {
+  draw(){
+    // this.time += deltaTime;
+    
     if(!btGenerateBl){
       this.createCells();
       btGenerateBl = true;
     }
-
 
     for (let i = 0; i < this.n; i++) {
       for (let j = 0; j < this.n; j++) {
@@ -24,28 +27,28 @@ class Grid {
     this.cells = new Array(this.n);
 
     let sChance = 6;
-    let wChance = 5;
+    let wChance = 3;
     let qChance = 3;
-    let oChance = 2;
+    let oChance = 3;
     let sum = sChance + wChance + qChance + oChance;
 
-    if(!isEnableBtO) oChance = 0;
-    if(!isEnableBtS) sChance = 0;
-    if(!isEnableBtW) wChance = 0;
-    if(!isEnableBtQ) qChance = 0;
 
     for (let i = 0; i < this.n; i++) {
-      let x = i * this.size;
       this.cells[i] = new Array(this.n);
 
       for (let j = 0; j < this.n; j++) {
+        let x = i * this.size;
         let y = j * this.size + GUISIZE;
-
         let newType = "";
-        // oChance = oChance * (this.cellsAroundType(i, j, "obstacle")); 
+        oChance = oChance + (this.cellsAroundType(i, j, "obstacle"))/550;
+
+        if(!isEnableBtO.isSelected) oChance = 0;
+        if(!isEnableBtS.isSelected) sChance = 0;
+        if(!isEnableBtW.isSelected) wChance = 0;
+        if(!isEnableBtQ.isSelected) qChance = 0;
+
         sum = sChance + wChance + qChance + oChance;
-        
-        let n = random(sum); 
+        let n = random(sum);
 
           if(n <= sChance){
             newType = "sand";
@@ -59,19 +62,16 @@ class Grid {
           if(n > sChance + wChance + qChance){
             newType = "obstacle";
           }
-        
-        if(i == 0 || j == 0 || i == this.n - 1 || j == this.n - 1) newType = "obstacle"; // Map borderes
+
+        if(i == 0 || j == 0 || i == this.n - 1 || j == this.n - 1) newType = "obstacle"; // Map borders
 
         this.cells[i][j] = new Cell(x, y, this.size, newType);
-
-
-
       }
     }
   }
 
   cellsAroundType(i, j, type) {
-    let count = 0;
+    let count = 1;
 
 
     if (i - 1 >= 0)
