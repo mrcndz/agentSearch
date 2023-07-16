@@ -29,7 +29,7 @@ class Grid {
     let sChance = 6;
     let wChance = 3;
     let qChance = 3;
-    let oChance = 3;
+    let oChance = 1;
     let sum = sChance + wChance + qChance + oChance;
 
 
@@ -40,7 +40,8 @@ class Grid {
         let x = i * this.size;
         let y = j * this.size + GUISIZE;
         let newType = "";
-        oChance = oChance + (this.cellsAroundType(i, j, "obstacle"))/550;
+
+        oChance = oChance + (this.cellsAroundType(i, j, "obstacle"))/600 * isEnableBtS.isSelected;
 
         if(!isEnableBtO.isSelected) oChance = 0;
         if(!isEnableBtS.isSelected) sChance = 0;
