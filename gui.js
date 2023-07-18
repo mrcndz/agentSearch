@@ -44,10 +44,10 @@ function setupGui() {
   // Botão de começar
   btStartCt = "Start";
   btStart = new Button({
-    x: width / 2 + distance + 30,
+    x: width / 2 + distance + 40,
     y: 30,
-    width: 60,
-    height: 50,
+    width: 40,
+    height: 30,
     align_x: 0,
     align_y: 0,
     content: "Start",
@@ -72,13 +72,13 @@ function setupGui() {
   // Botão de gerar novo terreno
   btGenerateBl = true;
   btGenerate = new Button({
-    x: width / 2 - distance - 60,
+    x: width / 2 - distance - 40,
     y: 30,
-    width: 60,
-    height: 50,
+    width: 40,
+    height: 30,
     align_x: 0,
     align_y: 0,
-    content: "Generate",
+    content: "New",
     on_press() {
       if (btGenerateBl == true) {
         btGenerateBl = false;
