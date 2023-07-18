@@ -1,35 +1,30 @@
 class World {
   constructor(size) {
     this.size = size;
+    this.ni = width / size;
+    this.nj = (height - GUISIZE) / size;
     this.n = width / size;
     this.cells = [];
     this.createCells();
+    this.isRunning = false;
 
     this.agent = new Agent(this.cells);
   }
 
   draw(){
-    // Draw new world
-    if(!btGenerateBl){
-      this.createCells();
-      this.agent.randomSpawn();
-      btGenerateBl = true;
-    }
-
     // Draw cells
-    for (let i = 0; i < this.n; i++) {
-      for (let j = 0; j < this.n; j++) {
+    for (let i = 0; i < this.ni; i++) {
+      for (let j = 0; j < this.nj; j++) {
         this.cells[i][j].draw();
       }
     }
 
     // Draw Agent
     this.agent.draw();
-
   }
 
   createCells() {
-    this.cells = new Array(this.n);
+    this.cells = new Array(this.ni);
 
     let sChance = 6;
     let wChance = 3;
@@ -38,10 +33,10 @@ class World {
     let sum = sChance + wChance + qChance + oChance;
 
 
-    for (let i = 0; i < this.n; i++) {
-      this.cells[i] = new Array(this.n);
+    for (let i = 0; i < this.ni; i++) {
+      this.cells[i] = new Array(this.nj);
 
-      for (let j = 0; j < this.n; j++) {
+      for (let j = 0; j < this.nj; j++) {
         let x = i * this.size;
         let y = j * this.size + GUISIZE;
         let newType = "";
@@ -69,7 +64,7 @@ class World {
             newType = "obstacle";
           }
 
-        if(i == 0 || j == 0 || i == this.n - 1 || j == this.n - 1) newType = "obstacle"; // Map borders
+        if(i == 0 || j == 0 || i == this.ni - 1 || j == this.nj - 1) newType = "obstacle"; // Map borders
 
         this.cells[i][j] = new Cell(x, y, this.size, newType);
       }
@@ -88,15 +83,15 @@ class World {
       if(this.cells[i][j - 1].type == type)
         count++;
 
-    if (i + 1 > this.n)
+    if (i + 1 > this.ni)
       if(this.cells[i + 1][j].type == type)
         count++;
 
-    if (j + 1 > this.n)
+    if (j + 1 > this.nj)
       if(this.cells[i][j + 1].type == type)
         count++;
 
-    if(j + 1 > this.n && i + 1 > this.n)
+    if(j + 1 > this.nj && i + 1 > this.ni)
       if(this.cells[i + 1][j + 1].type == type)
         count++;
 
@@ -104,11 +99,11 @@ class World {
       if(this.cells[i - 1][j - 1].type == type)
         count++;
 
-    if(j + 1 > this.n && i - 1 >= 0)
+    if(j + 1 > this.nj && i - 1 >= 0)
       if(this.cells[i - 1][j + 1].type == type)
         count++;
 
-    if(j - 1 >= 0 && i + 1 > this.n)
+    if(j - 1 >= 0 && i + 1 > this.ni)
       if(this.cells[i + 1][j - 1].type == type)
         count++;
 
@@ -116,13 +111,15 @@ class World {
   }
 
   applyType(type) {
-    for (let i = 0; i < this.n; i++)
-      for (let j = 0; j < this.n; j++) this.cells[i][j].applyType(type);
+    for (let i = 0; i < this.ni; i++)
+      for (let j = 0; j < this.nj; j++) 
+        if(this.agent.i == i && this.agent.j == j) continue;
+        else this.cells[i][j].applyType(type);
   }
 
   unsetSelected() {
-    for (let i = 0; i < this.n; i++)
-      for (let j = 0; j < this.n; j++)
+    for (let i = 0; i < this.ni; i++)
+      for (let j = 0; j < this.nj; j++)
         if (this.cells[i][j].isSelected) this.cells[i][j].unsetSelected();
   }
 }

@@ -4,6 +4,7 @@ const GUISIZE = 60;
 // Button for Start, Generate
 var btStart;
 var btStartCt;
+var btStartBl;
 var btGenerate;
 var btGenerateBl;
 
@@ -53,9 +54,13 @@ function setupGui() {
     on_press() {
       if (btStartCt == "Start") {
         btStartCt = "Stop";
+        btStartBl = true;
+        world.isRunning = true;
         btStart.style("default", STYLE_RED);
       } else {
         btStartCt = "Start";
+        btStartBl = false;
+        world.isRunning = false;
         btStart.style("default", STYLE_GREEN);
       }
 
@@ -106,11 +111,13 @@ function setupGui() {
   isEnableBtQ.cycleSelected();
 }
 
-function runButtons(world, agent) {
+function runButtons(world) {
   fill("#474747");
   rect(0, 0, width, 60, 0);
 
   btStart.draw();
+  if(world.isRunning) return;
+
   btGenerate.draw();
 
   cellButtonS.draw();
@@ -132,4 +139,10 @@ function runButtons(world, agent) {
   isEnableBtO.draw();
   isEnableBtQ.draw();
   isEnableBtW.draw();
+
+  if(!btGenerateBl){
+    world.createCells();
+    world.agent.randomSpawn();
+    btGenerateBl = true;
+  }
 }

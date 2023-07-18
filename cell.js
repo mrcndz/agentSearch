@@ -8,7 +8,6 @@ class Cell {
     this.isSelected = false;
     this.isSelecting = false;
     this.isPressed = false;
-    this.agentIsInside = false;
     this.strokeColor = "#ffffff";
   }
 
