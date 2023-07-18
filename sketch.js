@@ -1,13 +1,15 @@
-var grid;
+var world;
+var agent;
+var goal;
 
 function setup() {
-  createCanvas(800, 860);
+  createCanvas(600, 660);
   setupGui();
-  grid = new Grid(20);
+  world = new World(25);
 }
 
 function draw() {
   background(220);
-  grid.draw();
-  runButtons(grid);
+  world.draw();
+  runButtons(world, agent);
 }

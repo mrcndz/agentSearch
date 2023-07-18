@@ -106,7 +106,7 @@ function setupGui() {
   isEnableBtQ.cycleSelected();
 }
 
-function runButtons() {
+function runButtons(world, agent) {
   fill("#474747");
   rect(0, 0, width, 60, 0);
 
@@ -126,7 +126,7 @@ function runButtons() {
   if (cellButtonO.isPressed) typeSelected = cellButtonO.type;
   cellButtonO.typeSetSelected(typeSelected);
 
-  grid.applyType(typeSelected);
+  world.applyType(typeSelected);
 
   isEnableBtS.draw();
   isEnableBtO.draw();

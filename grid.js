@@ -1,26 +1,31 @@
-class Grid {
+class World {
   constructor(size) {
-    // this.cells = [];
     this.size = size;
     this.n = width / size;
-    this.cells;
+    this.cells = [];
     this.createCells();
-    this.time = 0;
+
+    this.agent = new Agent(this.cells);
   }
 
   draw(){
-    // this.time += deltaTime;
-    
+    // Draw new world
     if(!btGenerateBl){
       this.createCells();
+      this.agent.randomSpawn();
       btGenerateBl = true;
     }
 
+    // Draw cells
     for (let i = 0; i < this.n; i++) {
       for (let j = 0; j < this.n; j++) {
         this.cells[i][j].draw();
       }
     }
+
+    // Draw Agent
+    this.agent.draw();
+
   }
 
   createCells() {
@@ -41,7 +46,7 @@ class Grid {
         let y = j * this.size + GUISIZE;
         let newType = "";
 
-        oChance = oChance + (this.cellsAroundType(i, j, "obstacle"))/600 * isEnableBtS.isSelected;
+        oChance = oChance + (this.cellsAroundType(i, j, "obstacle"))/1000 * isEnableBtS.isSelected;
 
         if(!isEnableBtO.isSelected) oChance = 0;
         if(!isEnableBtS.isSelected) sChance = 0;
