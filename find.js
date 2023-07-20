@@ -24,6 +24,7 @@ class Find{
             this.alpha = this.alpha + (deltaTime/animationSpeed);
         } else {
             this.alpha = 100;
+            this.showPath();
         }
 
         if(this.alpha >= 100 && this.exploredHistory.length > 0 && this.frontierHistory.length > 0){
@@ -52,6 +53,15 @@ class Find{
         rectMode(CORNER);
     }
 
+    showPath(){
+        for(let i = 0; i < this.path.length; i++){
+            fill("#ff0000a4")
+            noStroke();
+            rect(this.path[i].x + this.cells[0][0].size/2, this.path[i].y + this.cells[0][0].size/2, this.cells[0][0].size, this.cells[0][0].size);
+        }
+
+    }
+
 
     bfs(cells, start, goal){
         this.cells = cells;
@@ -60,9 +70,11 @@ class Find{
 
         let frontier =  [];
         let explored =  [];
+        let cameFrom = {};
 
         frontier.push(this.start);
         explored.push(this.start);
+        cameFrom[this.start.i + "," + this.start.j] = null;
 
         while(frontier.length > 0 && !frontier.includes(this.goal) && !explored.includes(this.goal)){
             this.exploredHistory.push(explored.slice());
@@ -75,9 +87,18 @@ class Find{
                 if(!explored.includes(neighbor)){
                     frontier.push(neighbor);
                     explored.push(neighbor);
+                    cameFrom[neighbor.i + "," + neighbor.j] = current;
                 }
            }
         this.frontierHistory.push(frontier.slice());
         }
+
+        let path = [];
+        let current = this.goal;
+        while(current != null){
+            path.unshift(current);
+            current = cameFrom[current.i + "," + current.j];
+        }
+        this.path = path;
     }
 }

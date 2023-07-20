@@ -192,7 +192,23 @@ class World {
     }
 
     this.pathVisualizer = new Find();
-    this.pathVisualizer.bfs(this.cells, this.agent, this.goal);
+
+    switch(btAlgorithmChosen){
+      case "BFS":
+        this.pathVisualizer.bfs(this.cells, this.agent, this.goal);
+        break;
+      case "DFS":
+        this.pathVisualizer.dfs(this.cells, this.agent, this.goal);
+      case "A*":
+        this.pathVisualizer.aStar(this.cells, this.agent, this.goal);
+        break;
+      case "GREEDY":
+        this.pathVisualizer.greedy(this.cells, this.agent, this.goal);
+        break;
+      case "UNIFORM COST":
+        this.pathVisualizer.uniformCost(this.cells, this.agent, this.goal);
+        break;
+    }
     this.isRunning = true;
 
     // this.runPathVisualizer.drawAndAnimate("red", 1000);

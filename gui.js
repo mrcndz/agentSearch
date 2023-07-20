@@ -8,13 +8,12 @@ var btGenerate;
 var btGenerateBl;
 
 // Button for find algorithms
-var btAlgorithm;
-var btAlgorithmChosen;
 var btBFS;
 var btDFS;
 var btAStar;
 var btUniformCost;
 var btGreedy;
+var btAlgorithmChosen;
 
 // Button for drawing mode
 var btApply;
@@ -92,42 +91,8 @@ function setupGui() {
     },
   });
   btGenerate.style("default", STYLE_BLUE);
-  
-  btAlgorithmBl = false;
-  btAlgorithm = new Button({
-    x: width / 2 + distance + 100,
-    y: 30,
-    width: 100,
-    height: 30,
-    align_x: 0,
-    align_y: 0,
-    content: "Algorithm",
-    on_press() {
-      if(btAlgorithmBl == true){
-        btAlgorithmBl = false;
-      } else{
-        btAlgorithmBl = true;
-      }
-    },
-  });
 
-  btAlgorithm = new Button({
-    x: width / 2 + distance + 100,
-    y: 30,
-    width: 100,
-    height: 30,
-    align_x: 0,
-    align_y: 0,
-    content: "Algorithm",
-    on_press() {
-      if(btAlgorithmBl == true){
-        btAlgorithmBl = false;
-      } else{
-        btAlgorithmBl = true;
-      }
-    },
-  });
-
+  btAlgorithmChosen = "BFS";
   btBFS = new Button({
     x: width - 60 ,
     y: 15,
@@ -145,6 +110,7 @@ function setupGui() {
       btUniformCost.style("default", STYLE_DEFAULT);
     },
   });
+  btBFS.style("default", STYLE_GREEN);
 
   btDFS = new Button({
     x: width - 60, 
@@ -258,7 +224,6 @@ function runButtons(world) {
   cellButtonW.draw();
   cellButtonO.draw();
 
-  // btAlgorithm.draw();
   btBFS.draw();
   btDFS.draw();
   btAStar.draw();

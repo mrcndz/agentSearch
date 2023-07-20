@@ -9,8 +9,7 @@ function setup() {
 }
 
 function draw() {
-  background(220);
+  background(0);
   world.draw();
   runButtons(world);
-  // btStartCt = "Stop";
 }
