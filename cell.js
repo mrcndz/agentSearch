@@ -96,11 +96,11 @@ class Cell {
     this.isSelected = false;
   }
 
-  cost(){
-    if(this.type == "sand") return 1;
-    if(this.type == "quagmire") return 5;
-    if(this.type == "water") return 10;
-    if(this.type == "obstacle") return 1000000;
+  cost() {
+    if (this.type == "sand") return 1;
+    if (this.type == "quagmire") return 5;
+    if (this.type == "water") return 10;
+    if (this.type == "obstacle") return 1000000;
   }
 
 }
