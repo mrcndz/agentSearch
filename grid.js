@@ -87,13 +87,6 @@ class World {
         this.cells[i][j] = new Cell(i, j, x, y, this.size, newType);
       }
     }
-
-    // Now get neighbors
-    for (let i = 0; i < this.ni; i++)
-      for(let j = 0; j < this.nj; j++)
-        this.cells[i][j].neighbors = this.getNeighbors(i, j);
-
-
   }
 
   numOfNeighborsOfType(i, j, type) {
@@ -193,6 +186,11 @@ class World {
 
     this.pathVisualizer = new Find();
 
+    // Get neighbors
+    for (let i = 0; i < this.ni; i++)
+      for(let j = 0; j < this.nj; j++)
+        this.cells[i][j].neighbors = this.getNeighbors(i, j);
+    
     switch(btAlgorithmChosen){
       case "BFS":
         this.pathVisualizer.bfs(this.cells, this.agent, this.goal);
