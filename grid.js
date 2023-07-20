@@ -194,7 +194,6 @@ class World {
     this.pathVisualizer = new Find();
     this.pathVisualizer.bfs(this.cells, this.agent, this.goal);
     this.isRunning = true;
-    
 
     // this.runPathVisualizer.drawAndAnimate("red", 1000);
 
