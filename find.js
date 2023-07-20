@@ -20,11 +20,6 @@ class Find {
 
         let size = this.cells[0][0].size;
 
-        if (this.exploredHistory.length > 0 && this.frontierHistory.length > 0) {
-            this.time = this.time + (deltaTime / animationSpeed);
-        } else {
-            this.showPath(colorPath);
-        }
 
         if (this.time >= 100 && this.exploredHistory.length > 0 && this.frontierHistory.length > 0) {
             this.currentExplored = this.exploredHistory.shift();
@@ -57,14 +52,20 @@ class Find {
             rect(this.currentFrontier[i].x + size / 2, this.currentFrontier[i].y + size / 2, size, size);
         }
 
+
+        if (this.exploredHistory.length > 0 && this.frontierHistory.length > 0) {
+            this.time = this.time + (deltaTime / animationSpeed);
+        } else {
+            this.showPath(colorPath);
+        }
         rectMode(CORNER);
     }
 
     showPath(colorPath) {
         for (let i = 0; i < this.path.length; i++) {
-            fill("#ff0000d7")
+            fill(colorPath)
             noStroke();
-            rect(this.path[i].x + this.cells[0][0].size / 2, this.path[i].y + this.cells[0][0].size / 2, this.cells[0][0].size, this.cells[0][0].size);
+            rect(this.path[i].x + this.cells[0][0].size / 2, this.path[i].y + this.cells[0][0].size / 2, this.cells[0][0].size/2, this.cells[0][0].size/2);
         }
 
     }

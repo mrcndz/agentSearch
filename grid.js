@@ -181,7 +181,7 @@ class World {
 
   runPathVisualizer() {
     if (this.isRunning == true) {
-      this.pathVisualizer.drawAndAnimate("#ff8800cd", "#00000071", "#ff000072", 0.2);
+      this.pathVisualizer.drawAndAnimate("#ff880081", "#00000071", "#ff000072", 0.2);
       return;
     }
 
