@@ -197,6 +197,7 @@ class World {
         break;
       case "DFS":
         this.pathVisualizer.dfs(this.cells, this.agent, this.goal);
+        break;
       case "A*":
         this.pathVisualizer.aStar(this.cells, this.agent, this.goal);
         break;
