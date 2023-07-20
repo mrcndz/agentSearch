@@ -1,5 +1,7 @@
 class Cell {
-  constructor(x, y, size, type) {
+  constructor(i, j, x, y, size, type) {
+    this.i = i;
+    this.j = j;
     this.x = x;
     this.y = y;
     this.size = size;
@@ -9,6 +11,7 @@ class Cell {
     this.isSelecting = false;
     this.isPressed = false;
     this.strokeColor = "#ffffff";
+    this.neighbors = [];
   }
 
   draw() {
@@ -92,4 +95,12 @@ class Cell {
   unsetSelected() {
     this.isSelected = false;
   }
+
+  cost(){
+    if(this.type == "sand") return 1;
+    if(this.type == "quagmire") return 5;
+    if(this.type == "water") return 10;
+    if(this.type == "obstacle") return 1000000;
+  }
+
 }

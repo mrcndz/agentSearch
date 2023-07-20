@@ -1,26 +1,44 @@
 class World {
   constructor(size) {
     this.size = size;
-    this.ni = width / size;
-    this.nj = (height - GUISIZE) / size;
-    this.n = width / size;
-    this.cells = [];
-    this.createCells();
-    this.isRunning = false;
+    this.ni = width / size; // i axis size
+    this.nj = (height - GUISIZE) / size; // j axis size
 
-    this.agent = new Agent(this.cells);
+    this.cells = [];
+    this.createCells(); // Generate new cells!
+
+    this.isRunning = false;
+    this.pathVisualizer = new Find();
+    this.agent = new Agent(this.cells, false);
+    this.goal = new Agent(this.cells, true);
+
   }
 
   draw(){
     // Draw cells
-    for (let i = 0; i < this.ni; i++) {
-      for (let j = 0; j < this.nj; j++) {
+    for (let i = 0; i < this.ni; i++)
+      for (let j = 0; j < this.nj; j++){
         this.cells[i][j].draw();
       }
-    }
 
     // Draw Agent
     this.agent.draw();
+    this.goal.draw();
+
+
+    // New button
+    if(!btGenerateBl){
+      world.createCells();
+      world.goal.updateCells(world.cells);
+      world.agent.updateCells(world.cells);
+      world.goal.randomSpawn();
+      world.agent.randomSpawn();
+      btGenerateBl = true;
+    }
+
+    // Start button
+    if(btStartCt == "Stop") this.runPathVisualizer();
+    else this.isRunning = false;
   }
 
   createCells() {
@@ -41,7 +59,7 @@ class World {
         let y = j * this.size + GUISIZE;
         let newType = "";
 
-        oChance = oChance + (this.cellsAroundType(i, j, "obstacle"))/1000 * isEnableBtS.isSelected;
+        oChance = oChance + (this.numOfNeighborsOfType(i, j, "obstacle"))/1000 * isEnableBtS.isSelected;
 
         if(!isEnableBtO.isSelected) oChance = 0;
         if(!isEnableBtS.isSelected) sChance = 0;
@@ -66,14 +84,20 @@ class World {
 
         if(i == 0 || j == 0 || i == this.ni - 1 || j == this.nj - 1) newType = "obstacle"; // Map borders
 
-        this.cells[i][j] = new Cell(x, y, this.size, newType);
+        this.cells[i][j] = new Cell(i, j, x, y, this.size, newType);
       }
     }
+
+    // Now get neighbors
+    for (let i = 0; i < this.ni; i++)
+      for(let j = 0; j < this.nj; j++)
+        this.cells[i][j].neighbors = this.getNeighbors(i, j);
+
+
   }
 
-  cellsAroundType(i, j, type) {
+  numOfNeighborsOfType(i, j, type) {
     let count = 1;
-
 
     if (i - 1 >= 0)
       if(this.cells[i - 1][j].type == type)
@@ -112,7 +136,7 @@ class World {
 
   applyType(type) {
     for (let i = 0; i < this.ni; i++)
-      for (let j = 0; j < this.nj; j++) 
+      for (let j = 0; j < this.nj; j++)
         if(this.agent.i == i && this.agent.j == j) continue;
         else this.cells[i][j].applyType(type);
   }
@@ -122,4 +146,59 @@ class World {
       for (let j = 0; j < this.nj; j++)
         if (this.cells[i][j].isSelected) this.cells[i][j].unsetSelected();
   }
+
+  getNeighbors(i, j){
+    let neighbors = [];
+
+    if (i - 1 >= 0)
+      if(this.cells[i - 1][j].type != "obstacle")
+        neighbors.push(this.cells[i - 1][j]);
+
+    if (j - 1 >= 0)
+      if(this.cells[i][j - 1].type != "obstacle")
+        neighbors.push(this.cells[i][j - 1]);
+
+    if (i + 1 < this.ni)
+      if(this.cells[i + 1][j].type != "obstacle")
+        neighbors.push(this.cells[i + 1][j]);
+
+    if (j + 1 < this.nj)
+      if(this.cells[i][j + 1].type != "obstacle")
+        neighbors.push(this.cells[i][j + 1]);
+
+    if(j + 1 < this.nj && i + 1 < this.ni)
+      if(this.cells[i + 1][j + 1].type != "obstacle")
+        neighbors.push(this.cells[i + 1][j + 1]);
+
+    if(j - 1 >= 0 && i - 1 >= 0)
+      if(this.cells[i - 1][j - 1].type != "obstacle")
+        neighbors.push(this.cells[i - 1][j - 1]);
+
+    if(j + 1 < this.nj && i - 1 >= 0)
+      if(this.cells[i - 1][j + 1].type != "obstacle")
+        neighbors.push(this.cells[i - 1][j + 1]);
+
+    if(j - 1 >= 0 && i + 1 < this.ni)
+      if(this.cells[i + 1][j - 1].type != "obstacle")
+        neighbors.push(this.cells[i + 1][j - 1]);
+
+    return neighbors;
+  }
+
+  runPathVisualizer(){
+    if(this.isRunning == true){
+      this.pathVisualizer.drawAndAnimate("#ff8800cd", "#00eeff8d", 1);
+      return;
+    }
+
+    this.pathVisualizer = new Find();
+    this.pathVisualizer.bfs(this.cells, this.agent, this.goal);
+    this.isRunning = true;
+    
+
+    // this.runPathVisualizer.drawAndAnimate("red", 1000);
+
+    // this.pathVisualizer.bfs(this.agent, this.goal);
+  }
+
 }

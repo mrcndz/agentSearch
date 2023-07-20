@@ -4,7 +4,6 @@ const GUISIZE = 60;
 // Button for Start, Generate
 var btStart;
 var btStartCt;
-var btStartBl;
 var btGenerate;
 var btGenerateBl;
 
@@ -54,13 +53,9 @@ function setupGui() {
     on_press() {
       if (btStartCt == "Start") {
         btStartCt = "Stop";
-        btStartBl = true;
-        world.isRunning = true;
         btStart.style("default", STYLE_RED);
       } else {
         btStartCt = "Start";
-        btStartBl = false;
-        world.isRunning = false;
         btStart.style("default", STYLE_GREEN);
       }
 
@@ -91,19 +86,19 @@ function setupGui() {
 
   // Botão de escolha de modo de desenho
   let btCellDist = distance + 30;
-  cellButtonS = new Cell(10 + 0 * btCellDist, 15, 30, "sand");
-  cellButtonQ = new Cell(10 + 1 * btCellDist, 15, 30, "quagmire");
-  cellButtonW = new Cell(10 + 2 * btCellDist, 15, 30, "water");
-  cellButtonO = new Cell(10 + 3 * btCellDist, 15, 30, "obstacle");
+  cellButtonS = new Cell(0, 0, 10 + 0 * btCellDist, 15, 30, "sand");
+  cellButtonQ = new Cell(0, 0, 10 + 1 * btCellDist, 15, 30, "quagmire");
+  cellButtonW = new Cell(0, 0, 10 + 2 * btCellDist, 15, 30, "water");
+  cellButtonO = new Cell(0, 0, 10 + 3 * btCellDist, 15, 30, "obstacle");
   typeSelected = "obstacle";
   // Botão de escolha de modo de desenho
-  isEnableBtS = new Cell(width - 40 - 0 * btCellDist, 15, 30, "sand");
+  isEnableBtS = new Cell(0, 0, width - 40 - 0 * btCellDist, 15, 30, "sand");
   isEnableBtS.strokeColor = "green";
-  isEnableBtQ = new Cell(width - 40 - 1 * btCellDist, 15, 30, "quagmire");
+  isEnableBtQ = new Cell(0, 0, width - 40 - 1 * btCellDist, 15, 30, "quagmire");
   isEnableBtQ.strokeColor = "green";
-  isEnableBtW = new Cell(width - 40 - 2 * btCellDist, 15, 30, "water");
+  isEnableBtW = new Cell(0, 0, width - 40 - 2 * btCellDist, 15, 30, "water");
   isEnableBtW.strokeColor = "green";
-  isEnableBtO = new Cell(width - 40 - 3 * btCellDist, 15, 30, "obstacle");
+  isEnableBtO = new Cell(0, 0, width - 40 - 3 * btCellDist, 15, 30, "obstacle");
   isEnableBtO.strokeColor = "green";
   isEnableBtS.cycleSelected();
   isEnableBtO.cycleSelected();
@@ -139,10 +134,4 @@ function runButtons(world) {
   isEnableBtO.draw();
   isEnableBtQ.draw();
   isEnableBtW.draw();
-
-  if(!btGenerateBl){
-    world.createCells();
-    world.agent.randomSpawn();
-    btGenerateBl = true;
-  }
 }
