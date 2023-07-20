@@ -11,37 +11,44 @@ class Find{
         this.currentFrontier = [];
         this.currentExplored = [];
         this.cellSize = 0;
-        this.alpha = 0;
+        this.time = 0;
     }
 
-    drawAndAnimate(colorFrontier, colorExplored, animationSpeed){
+    drawAndAnimate(colorFrontier, colorNotExplored, colorPath, animationSpeed){
         rectMode(CENTER);
         // console.log(this.cellSize);
 
         let size = this.cells[0][0].size;
 
         if(this.exploredHistory.length > 0 && this.frontierHistory.length > 0){
-            this.alpha = this.alpha + (deltaTime/animationSpeed);
+            this.time = this.time + (deltaTime/animationSpeed);
         } else {
-            this.alpha = 100;
-            this.showPath();
+            this.showPath(colorPath);
         }
 
-        if(this.alpha >= 100 && this.exploredHistory.length > 0 && this.frontierHistory.length > 0){
-            this.alpha = 0;
+        if(this.time >= 100 && this.exploredHistory.length > 0 && this.frontierHistory.length > 0){
             this.currentExplored = this.exploredHistory.shift();
             this.currentFrontier = this.frontierHistory.shift();
         }
 
         console.log("Explored" + this.currentExplored.length);
 
-        colorFrontier = color(colorFrontier)
-        colorFrontier.setAlpha(map(this.alpha, 0, 100, 100, 200));
+        // fill(colorExplored);
+        noStroke();
+        fill(colorNotExplored);
+        for(let i = 0; i < this.cells.length; i++){
+            for(let j = 0; j < this.cells[i].length; j++){
+                let draw = true;
 
-        fill(colorExplored);
-        for(let i = 0; i < this.currentExplored.length; i++){
-            noStroke();
-            rect(this.currentExplored[i].x + size/2, this.currentExplored[i].y + size/2, this.cells[0][0].size, this.cells[0][0].size);
+                for(let k = 0; k < this.currentExplored.length; k++){
+                    if((this.currentExplored[k].i == i && this.currentExplored[k].j == j)){
+                        draw = false;
+                        break;
+                    }
+                }
+
+                if(draw) rect(this.cells[i][j].x + size/2, this.cells[i][j].y + size/2, size, size);
+            }
         }
 
         fill(colorFrontier);
@@ -53,9 +60,9 @@ class Find{
         rectMode(CORNER);
     }
 
-    showPath(){
+    showPath(colorPath){
         for(let i = 0; i < this.path.length; i++){
-            fill("#ff0000a4")
+            fill("#ff0000d7")
             noStroke();
             rect(this.path[i].x + this.cells[0][0].size/2, this.path[i].y + this.cells[0][0].size/2, this.cells[0][0].size, this.cells[0][0].size);
         }
