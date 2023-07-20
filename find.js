@@ -3,8 +3,10 @@ class Find {
         this.cells = [];
         this.start = null;
         this.goal = null;
+        this.agent = null;
 
         this.path = [];
+
         // Animation purposes
         this.frontierHistory = [];
         this.exploredHistory = [];
@@ -26,7 +28,7 @@ class Find {
             this.currentFrontier = this.frontierHistory.shift();
         }
 
-        console.log("Explored" + this.currentExplored.length);
+        //console.log("Explored" + this.currentExplored.length);
 
         // fill(colorExplored);
         noStroke();
@@ -57,6 +59,8 @@ class Find {
             this.time = this.time + (deltaTime / animationSpeed);
         } else {
             this.showPath(colorPath);
+            this.agent.setPath(this.path);
+            this.agent.move();
         }
         rectMode(CORNER);
     }
