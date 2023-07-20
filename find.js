@@ -11,8 +11,7 @@ class Find{
         this.currentFrontier = [];
         this.currentExplored = [];
         this.cellSize = 0;
-        this.time = 0;
-        this.it = 0;
+        this.alpha = 0;
     }
 
     drawAndAnimate(colorFrontier, colorExplored, animationSpeed){
@@ -22,19 +21,21 @@ class Find{
         let size = this.cells[0][0].size;
 
         if(this.exploredHistory.length > 0 && this.frontierHistory.length > 0){
-            this.cellSize = this.cellSize + (deltaTime/animationSpeed);
+            this.alpha = this.alpha + (deltaTime/animationSpeed);
         } else {
-            this.cellSize = size;
+            this.alpha = 100;
         }
 
-        if(this.cellSize >= size && this.exploredHistory.length > 0 && this.frontierHistory.length > 0){
-            this.cellSize = 0;
+        if(this.alpha >= 100 && this.exploredHistory.length > 0 && this.frontierHistory.length > 0){
+            this.alpha = 0;
             this.currentExplored = this.exploredHistory.shift();
             this.currentFrontier = this.frontierHistory.shift();
         }
 
         console.log("Explored" + this.currentExplored.length);
 
+        colorFrontier = color(colorFrontier)
+        colorFrontier.setAlpha(map(this.alpha, 0, 100, 100, 200));
 
         fill(colorExplored);
         for(let i = 0; i < this.currentExplored.length; i++){
@@ -45,7 +46,7 @@ class Find{
         fill(colorFrontier);
         for(let i = 0; i < this.currentFrontier.length; i++){
             noStroke();
-            rect(this.currentFrontier[i].x + size/2, this.currentFrontier[i].y + size/2, this.cellSize, this.cellSize);
+            rect(this.currentFrontier[i].x + size/2, this.currentFrontier[i].y + size/2, size, size);
         }
 
         rectMode(CORNER);
