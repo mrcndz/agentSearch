@@ -109,4 +109,43 @@ class Find {
         }
         this.path = path;
     }
+
+    dfs(cells, start, goal){
+        this.cells = cells;
+        this.start = cells[start.i][start.j];
+        this.goal = cells[goal.i][goal.j];
+
+        let frontier =  [];
+        let explored =  [];
+        let cameFrom = {};
+
+        frontier.push(this.start);
+        explored.push(this.start);
+        cameFrom[this.start.i + "," + this.start.j] = null;
+
+        while(frontier.length > 0 && !frontier.includes(this.goal) && !explored.includes(this.goal)){
+            this.exploredHistory.push(explored.slice());
+            let current = frontier.pop();
+            let neighbors = current.neighbors;
+
+            for(let i = 0; i < neighbors.length; i++){
+                let neighbor = neighbors[i];
+
+                if(!explored.includes(neighbor)){
+                    frontier.push(neighbor);
+                    explored.push(neighbor);
+                    cameFrom[neighbor.i + "," + neighbor.j] = current;
+                }
+           }
+        this.frontierHistory.push(frontier.slice());
+        }
+
+        let path = [];
+        let current = this.goal;
+        while(current != null){
+            path.unshift(current);
+            current = cameFrom[current.i + "," + current.j];
+        }
+        this.path = path;
+    }
 }
