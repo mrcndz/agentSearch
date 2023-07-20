@@ -2,10 +2,14 @@ class Agent {
     constructor(cells, isGoal) {
         this.i = 0;
         this.j = 0;
+        this.x = 0;
+        this.y = 0;
         this.cells = cells;
         this.heading = 0;
         this.speed = 0;
         this.isGoal = isGoal;
+
+        this.path = [];
 
         this.size = this.cells[0][0].size
 
@@ -35,11 +39,14 @@ class Agent {
 
         this.i = i;
         this.j = j;
+
+        this.x = this.cells[i][j].x + this.size / 2;
+        this.y = this.cells[i][j].y + this.size / 2;
     }
 
     draw() {
-        let x = this.cells[this.i][this.j].x + this.size / 2;
-        let y = this.cells[this.i][this.j].y + this.size / 2;
+        let x = this.x
+        let y = this.y;
 
         // rectMode(CENTER);
         if (this.isGoal) {
@@ -55,4 +62,41 @@ class Agent {
         stroke("black");
     }
 
+    setPath(path) {
+        this.path = path;
+    }
+
+
+    move() {
+        if (this.path.length <= 0)
+            return;
+
+        let x = this.x;
+        let y = this.y;
+
+        let x2 = this.path[0].x + this.size / 2;
+        let y2 = this.path[0].y + this.size / 2;
+
+        let dx = x2 - x;
+        let dy = y2 - y;
+
+        let angle = atan2(dy, dx);
+
+        this.heading = angle;
+
+        this.speed = 1/this.cells[this.i][this.j].cost();
+        console.log(this.speed);
+
+        this.x = x + cos(angle) * this.speed;
+        this.y = y + sin(angle) * this.speed;
+
+        if (dist(this.x, this.y, x2, y2) < this.size / 2) {
+            this.i = this.path[0].i;
+            this.j = this.path[0].j;
+        }
+
+        if (dist(this.x, this.y, x2, y2) < 1) {
+            this.path.shift();
+        }
+    }
 }

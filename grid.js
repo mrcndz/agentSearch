@@ -186,6 +186,7 @@ class World {
     }
 
     this.pathVisualizer = new Find();
+    this.pathVisualizer.agent = this.agent;
 
     // Get neighbors
     for (let i = 0; i < this.ni; i++)
