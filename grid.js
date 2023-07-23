@@ -35,11 +35,25 @@ class World {
     }
 
     // Start button
-    if (btStartCt == "Stop") this.runPathVisualizer();
-    else this.isRunning = false;
+    if (btStartCt == "Stop"){
+      this.runPathVisualizer();
+      fill("black");
+      textSize(20);
+      text("Food: " + String(this.agent.food), 10, 20);
+    }
+    else {
+      this.isRunning = false;
+      this.agent.food = 0;
+    }
 
     this.agent.draw();
     this.goal.draw();
+
+    if(dist(this.agent.x, this.agent.y, this.goal.x, this.goal.y) <= 1) {
+      this.goal.randomSpawn();
+      this.agent.food++;
+      this.isRunning = false;
+    }
   }
 
   createCells() {

@@ -8,6 +8,7 @@ class Agent {
         this.heading = 0;
         this.speed = 0;
         this.isGoal = isGoal;
+        this.food = 0;
 
         this.path = [];
 
@@ -84,7 +85,7 @@ class Agent {
 
         this.heading = angle;
 
-        this.speed = 1/this.cells[this.i][this.j].cost();
+        this.speed = 2/this.cells[this.i][this.j].cost();
         console.log(this.speed);
 
         this.x = x + cos(angle) * this.speed;
@@ -95,7 +96,9 @@ class Agent {
             this.j = this.path[0].j;
         }
 
-        if (dist(this.x, this.y, x2, y2) < 1) {
+        if (dist(this.x, this.y, x2, y2) < 2) {
+            this.x = x2;
+            this.y = y2;
             this.path.shift();
         }
     }
