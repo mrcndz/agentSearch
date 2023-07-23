@@ -37,9 +37,6 @@ class World {
     // Start button
     if (btStartCt == "Stop"){
       this.runPathVisualizer();
-      fill("black");
-      textSize(20);
-      text("Food: " + String(this.agent.food), 10, 20);
     }
     else {
       this.isRunning = false;
@@ -54,6 +51,9 @@ class World {
       this.agent.food++;
       this.isRunning = false;
     }
+
+    textSize(15);
+    text("Food: " + String(this.agent.food), width/2 + 100, 30);
   }
 
   createCells() {
