@@ -212,7 +212,7 @@ function runButtons(world) {
   rect(0, 0, width, 60, 0);
 
   btStart.draw();
-  if (world.isRunning) {
+  if (btStartCt == "Stop") {
     world.unsetSelected();
     return;
   }
