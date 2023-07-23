@@ -37,10 +37,20 @@ class World {
     // Start button
     if (btStartCt == "Stop"){
       this.runPathVisualizer();
+      stroke(2);
+      textSize(20);
+      fill("white");
+      text("Food: " + String(this.agent.food), 45, 30);
+      text("Speed: " + String(this.agent.speed), 145, 30);
+      textSize(15);
+      noStroke();
+      text("Using " + btAlgorithmChosen, width-200, 30);
     }
     else {
       this.isRunning = false;
       this.agent.food = 0;
+      this.agent.x = this.cells[this.agent.i][this.agent.j].x + this.size / 2;
+      this.agent.y = this.cells[this.agent.i][this.agent.j].y + this.size / 2;
     }
 
     this.agent.draw();
@@ -49,11 +59,11 @@ class World {
     if(dist(this.agent.x, this.agent.y, this.goal.x, this.goal.y) <= 1) {
       this.goal.randomSpawn();
       this.agent.food++;
+      this.agent.speed = 0;
       this.isRunning = false;
     }
 
     textSize(15);
-    text("Food: " + String(this.agent.food), width/2 + 100, 30);
   }
 
   createCells() {
