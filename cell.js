@@ -103,4 +103,8 @@ class Cell {
     if (this.type == "obstacle") return 1000000;
   }
 
+  isObstacle() {
+    return this.type == "obstacle";
+  }
+
 }
