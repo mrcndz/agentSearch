@@ -167,9 +167,12 @@ class Find {
         explored.push(this.start);
         cameFrom[this.start.i + "," + this.start.j] = null;
 
-        // Função heurística (custo do terreno)
+        // Função heurística (custo do terreno * distância euclidiana entre cell e goal)
         let calculateHeuristic = (cell) => {
-            return cell.cost();
+            const dx = Math.abs(cell.i - this.goal.i);
+            const dy = Math.abs(cell.j - this.goal.j);
+            const euclideanDistance = Math.sqrt(dx * dx + dy * dy);
+            return cell.cost() * euclideanDistance;
         };
 
         while (frontier.length > 0 && !frontier.includes(this.goal) && !explored.includes(this.goal)) {
@@ -183,7 +186,7 @@ class Find {
             for (let i = 0; i < neighbors.length; i++) {
                 let neighbor = neighbors[i];
 
-                if (!explored.includes(neighbor) && !neighbor.isObstacle()) {
+                if (!explored.includes(neighbor)) {
                     frontier.push(neighbor);
                     explored.push(neighbor);
                     cameFrom[neighbor.i + "," + neighbor.j] = current;
