@@ -152,4 +152,55 @@ class Find {
         }
         this.path = path;
     }
+
+    // Faz a escolha ótima local buscando a escolha ótima global
+    greedy(cells, start, goal) {
+        this.cells = cells;
+        this.start = cells[start.i][start.j];
+        this.goal = cells[goal.i][goal.j];
+
+        let frontier = [];
+        let explored = [];
+        let cameFrom = {};
+
+        frontier.push(this.start);
+        explored.push(this.start);
+        cameFrom[this.start.i + "," + this.start.j] = null;
+
+        // Função heurística (custo do terreno)
+        let calculateHeuristic = (cell) => {
+            return cell.cost();
+        };
+
+        while (frontier.length > 0 && !frontier.includes(this.goal) && !explored.includes(this.goal)) {
+            // Fila pela ordem de custo
+            frontier.sort((a, b) => calculateHeuristic(a) - calculateHeuristic(b));
+
+            this.exploredHistory.push(explored.slice());
+            let current = frontier.shift();
+            let neighbors = current.neighbors;
+
+            for (let i = 0; i < neighbors.length; i++) {
+                let neighbor = neighbors[i];
+
+                if (!explored.includes(neighbor) && !neighbor.isObstacle()) {
+                    frontier.push(neighbor);
+                    explored.push(neighbor);
+                    cameFrom[neighbor.i + "," + neighbor.j] = current;
+                }
+            }
+
+            this.frontierHistory.push(frontier.slice());
+        }
+
+        let path = [];
+        let current = this.goal;
+        while (current != null) {
+            path.unshift(current);
+            current = cameFrom[current.i + "," + current.j];
+        }
+
+        this.path = path;
+    }
+
 }
