@@ -69,7 +69,7 @@ class Find {
         for (let i = 0; i < this.path.length; i++) {
             fill(colorPath)
             noStroke();
-            rect(this.path[i].x + this.cells[0][0].size / 2, this.path[i].y + this.cells[0][0].size / 2, this.cells[0][0].size/2, this.cells[0][0].size/2);
+            rect(this.path[i].x + this.cells[0][0].size / 2, this.path[i].y + this.cells[0][0].size / 2, this.cells[0][0].size / 2, this.cells[0][0].size / 2);
         }
 
     }
@@ -114,45 +114,84 @@ class Find {
         this.path = path;
     }
 
-    dfs(cells, start, goal){
+    dfs(cells, start, goal) {
         this.cells = cells;
         this.start = cells[start.i][start.j];
         this.goal = cells[goal.i][goal.j];
 
-        let frontier =  [];
-        let explored =  [];
+        let frontier = [];
+        let explored = [];
         let cameFrom = {};
 
         frontier.push(this.start);
         explored.push(this.start);
         cameFrom[this.start.i + "," + this.start.j] = null;
 
-        while(frontier.length > 0 && !frontier.includes(this.goal) && !explored.includes(this.goal)){
+        while (frontier.length > 0 && !frontier.includes(this.goal) && !explored.includes(this.goal)) {
             this.exploredHistory.push(explored.slice());
             let current = frontier.pop();
             let neighbors = current.neighbors;
 
-            for(let i = 0; i < neighbors.length; i++){
+            for (let i = 0; i < neighbors.length; i++) {
                 let neighbor = neighbors[i];
 
-                if(!explored.includes(neighbor)){
+                if (!explored.includes(neighbor)) {
                     frontier.push(neighbor);
                     explored.push(neighbor);
                     cameFrom[neighbor.i + "," + neighbor.j] = current;
                 }
-           }
-        this.frontierHistory.push(frontier.slice());
+            }
+            this.frontierHistory.push(frontier.slice());
         }
 
         let path = [];
         let current = this.goal;
-        while(current != null){
+        while (current != null) {
             path.unshift(current);
             current = cameFrom[current.i + "," + current.j];
         }
         this.path = path;
     }
 
+    uniformCost(cells, agent, goal) {
+        this.cells = cells;
+        this.agent = agent;
+        this.start = cells[agent.i][agent.j];
+        this.goal = cells[goal.i][goal.j];
+
+        let frontier = [];
+        let explored = [];
+        let cameFrom = {};
+
+        frontier.push(this.start);
+        explored.push(this.start);
+        cameFrom[this.start.i + "," + this.start.j] = null;
+
+        while (frontier.length > 0 && !frontier.includes(this.goal) && !explored.includes(this.goal)) {
+            this.exploredHistory.push(explored.slice());
+            let current = frontier.shift();
+            let neighbors = current.neighbors;
+
+            for (let i = 0; i < neighbors.length; i++) {
+                let neighbor = neighbors[i];
+
+                if (!explored.includes(neighbor)) {
+                    frontier.push(neighbor);
+                    explored.push(neighbor);
+                    cameFrom[neighbor.i + "," + neighbor.j] = current;
+                }
+            }
+            this.frontierHistory.push(frontier.slice());
+        }
+
+        let path = [];
+        let current = this.goal;
+        while (current != null) {
+            path.unshift(current);
+            current = cameFrom[current.i + "," + current.j];
+        }
+        this.path = path;
+    }
     // Faz a escolha ótima local buscando a escolha ótima global
     greedy(cells, start, goal) {
         this.cells = cells;
