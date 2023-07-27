@@ -35,7 +35,7 @@ class World {
     }
 
     // Start button
-    if (btStartCt == "Stop"){
+    if (btStartCt == "Stop") {
       this.runPathVisualizer();
       stroke(2);
       textSize(20);
@@ -44,7 +44,7 @@ class World {
       text("Speed: " + String(this.agent.speed), 145, 30);
       textSize(15);
       noStroke();
-      text("Using " + btAlgorithmChosen, width-200, 30);
+      text("Using " + btAlgorithmChosen, width - 200, 30);
     }
     else {
       this.isRunning = false;
@@ -56,7 +56,7 @@ class World {
     this.agent.draw();
     this.goal.draw();
 
-    if(dist(this.agent.x, this.agent.y, this.goal.x, this.goal.y) <= 1) {
+    if (dist(this.agent.x, this.agent.y, this.goal.x, this.goal.y) <= 1) {
       this.goal.randomSpawn();
       this.agent.food++;
       this.agent.speed = 0;
