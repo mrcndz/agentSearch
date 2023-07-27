@@ -44,7 +44,14 @@ class World {
       text("Speed: " + String(this.agent.speed), 145, 30);
       textSize(15);
       noStroke();
-      text("Using " + btAlgorithmChosen, width - 200, 30);
+      fill("orange")
+      text("Frontier: Orange\n", width - 100, 30);
+      fill("white")
+      text("Explored: Light", width - 100, 45);
+
+      textSize(15);
+      noStroke();
+      text("Using " + btAlgorithmChosen, width/2 + 100, 30);
     }
     else {
       this.isRunning = false;

@@ -299,6 +299,8 @@ class Find {
       path.unshift(current);
       current = cameFrom[current.i + "," + current.j];
     }
+    this.path = path;
+  }
 
     uniformCost(cells, start, goal) {
         this.cells = cells;
