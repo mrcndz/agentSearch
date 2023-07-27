@@ -94,7 +94,7 @@ function setupGui() {
 
   btAlgorithmChosen = "BFS";
   btBFS = new Button({
-    x: width - 60 ,
+    x: width - 60,
     y: 15,
     width: 100,
     height: 20,
@@ -113,7 +113,7 @@ function setupGui() {
   btBFS.style("default", STYLE_GREEN);
 
   btDFS = new Button({
-    x: width - 60, 
+    x: width - 60,
     y: 45,
     width: 100,
     height: 20,
@@ -129,7 +129,7 @@ function setupGui() {
       btUniformCost.style("default", STYLE_DEFAULT);
     },
   });
-    
+
   btAStar = new Button({
     x: width - 110 - 60,
     y: 45,
@@ -193,7 +193,7 @@ function setupGui() {
   cellButtonO = new Cell(0, 0, 10 + 3 * btCellDist, 15, 30, "obstacle");
   typeSelected = "obstacle";
   // Botão de escolha de modo de desenho
-  isEnableBtS = new Cell(0, 0, 10 + 4 * btCellDist + 20 , 15, 30, "sand");
+  isEnableBtS = new Cell(0, 0, 10 + 4 * btCellDist + 20, 15, 30, "sand");
   isEnableBtS.strokeColor = "green";
   isEnableBtQ = new Cell(0, 0, 10 + 5 * btCellDist + 20, 15, 30, "quagmire");
   isEnableBtQ.strokeColor = "green";
@@ -212,10 +212,10 @@ function runButtons(world) {
   rect(0, 0, width, 60, 0);
 
   btStart.draw();
-  if(world.isRunning){
+  if (btStartCt == "Stop") {
     world.unsetSelected();
     return;
-  } 
+  }
 
   btGenerate.draw();
 

@@ -10,6 +10,6 @@ function setup() {
 
 function draw() {
   background(0);
-  world.draw();
   runButtons(world);
+  world.draw();
 }
