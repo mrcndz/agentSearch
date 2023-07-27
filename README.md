@@ -5,6 +5,12 @@ This project focuses on implementing various search strategies (Breadth-First, D
 
 You can run the project in the link (https://editor.p5js.org/jmbj2/full/d_ORuluub)
 
+Or you can start a server with python http server:
+
+```
+$ python3 -m http.server
+```
+
 ## 1. Major Challenges, Mistakes, and Lessons Learned
 
 ### Improvements in Code Modularization:
