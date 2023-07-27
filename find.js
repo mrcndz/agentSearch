@@ -153,10 +153,9 @@ class Find {
         this.path = path;
     }
 
-    uniformCost(cells, agent, goal) {
+    uniformCost(cells, start, goal) {
         this.cells = cells;
-        this.agent = agent;
-        this.start = cells[agent.i][agent.j];
+        this.start = cells[start.i][start.j];
         this.goal = cells[goal.i][goal.j];
 
         let frontier = [];
@@ -192,6 +191,7 @@ class Find {
         }
         this.path = path;
     }
+
     // Faz a escolha ótima local buscando a escolha ótima global
     greedy(cells, start, goal) {
         this.cells = cells;
