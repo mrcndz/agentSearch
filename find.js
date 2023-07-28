@@ -195,7 +195,7 @@ class Find {
       const dx = Math.abs(cell.i - this.goal.i);
       const dy = Math.abs(cell.j - this.goal.j);
       const euclideanDistance = Math.sqrt(dx * dx + dy * dy);
-      return cell.cost() * euclideanDistance;
+      return euclideanDistance;
     };
 
     while (
