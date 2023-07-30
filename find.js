@@ -233,26 +233,7 @@ class Find {
     this.path = path;
   }
 
-  aStar(cells, start, goal) {
-    let calculateHeuristic = (cell) => {
-      const dx = Math.abs(cell.i - this.goal.i);
-      const dy = Math.abs(cell.j - this.goal.j);
-      const euclideanDistance = Math.sqrt(dx * dx + dy * dy);
-      return cell.cost() + euclideanDistance;
-    };
-
-    let calculateGCost = (cell) => {
-      let current = cell;
-      let gCost = 0;
-
-      while (current !== this.start) {
-        gCost += current.cost();
-        current = cameFrom[current.i + "," + current.j];
-      }
-
-      return gCost;
-    };
-
+  uniformCost(cells, start, goal) {
     this.cells = cells;
     this.start = cells[start.i][start.j];
     this.goal = cells[goal.i][goal.j];
@@ -260,21 +241,16 @@ class Find {
     let frontier = [];
     let explored = [];
     let cameFrom = {};
+    let costSoFar = {};
 
     frontier.push(this.start);
     explored.push(this.start);
     cameFrom[this.start.i + "," + this.start.j] = null;
+    costSoFar[this.start.i + "," + this.start.j] = 0;
 
-    while (
-      frontier.length > 0 &&
-      !frontier.includes(this.goal) &&
-      !explored.includes(this.goal)
-    ) {
-      frontier.sort((a, b) => {
-        const fCostA = calculateGCost(a) + calculateHeuristic(a);
-        const fCostB = calculateGCost(b) + calculateHeuristic(b);
-        return fCostA - fCostB;
-      });
+    while (frontier.length > 0 && !frontier.includes(this.goal) && !explored.includes(this.goal)) {
+      // Fila pela ordem de custo acumulado (custo até o nó)
+      frontier.sort((a, b) => costSoFar[a.i + "," + a.j] - costSoFar[b.i + "," + b.j]);
 
       this.exploredHistory.push(explored.slice());
       let current = frontier.shift();
@@ -282,9 +258,63 @@ class Find {
 
       for (let i = 0; i < neighbors.length; i++) {
         let neighbor = neighbors[i];
+        let newCost = costSoFar[current.i + "," + current.j] + neighbor.cost();
 
-        if (!explored.includes(neighbor)) {
+        if (!explored.includes(neighbor) && (!costSoFar[neighbor.i + "," + neighbor.j] || newCost < costSoFar[neighbor.i + "," + neighbor.j])) {
           frontier.push(neighbor);
+          explored.push(neighbor);
+          cameFrom[neighbor.i + "," + neighbor.j] = current;
+          costSoFar[neighbor.i + "," + neighbor.j] = newCost;
+        }
+      }
+
+      this.frontierHistory.push(frontier.slice());
+    }
+
+    let path = [];
+    let current = this.goal;
+    while (current != null) {
+      path.unshift(current);
+      current = cameFrom[current.i + "," + current.j];
+    }
+
+    this.path = path;
+  }
+
+  aStar(cells, start, goal) {
+    let calculateHeuristic = (cell) => {
+      const dx = Math.abs(cell.i - this.goal.i);
+      const dy = Math.abs(cell.j - this.goal.j);
+      const euclideanDistance = Math.sqrt(dx * dx + dy * dy);
+      return euclideanDistance;
+    };
+    this.cells = cells;
+    this.start = cells[start.i][start.j];
+    this.goal = cells[goal.i][goal.j];
+
+    let frontier = new PriorityQueue();
+    let explored = [];
+    let cameFrom = {};
+    let costSoFar = {};
+
+    frontier.enqueue(this.start, 0);
+    explored.push(this.start);
+    cameFrom[this.start.i + "," + this.start.j] = null;
+    costSoFar[this.start.i + "," + this.start.j] = 0;
+
+    while (!frontier.isEmpty() && !frontier.includes(this.goal) && !explored.includes(this.goal)) {
+      this.exploredHistory.push(explored.slice());
+      let current = frontier.dequeue();
+      let neighbors = current.neighbors;
+
+      for (let i = 0; i < neighbors.length; i++) {
+        let neighbor = neighbors[i];
+        let newCost = costSoFar[current.i + "," + current.j] + neighbor.cost();
+
+        if (!explored.includes(neighbor) && (!costSoFar[neighbor.i + "," + neighbor.j] || newCost < costSoFar[neighbor.i + "," + neighbor.j])) {
+          costSoFar[neighbor.i + "," + neighbor.j] = newCost;
+          let priority = newCost + calculateHeuristic(neighbor);
+          frontier.enqueue(neighbor, priority);
           explored.push(neighbor);
           cameFrom[neighbor.i + "," + neighbor.j] = current;
         }
@@ -299,54 +329,8 @@ class Find {
       path.unshift(current);
       current = cameFrom[current.i + "," + current.j];
     }
+
     this.path = path;
   }
 
-    uniformCost(cells, start, goal) {
-        this.cells = cells;
-        this.start = cells[start.i][start.j];
-        this.goal = cells[goal.i][goal.j];
-
-        let frontier = [];
-        let explored = [];
-        let cameFrom = {};
-        let costSoFar = {};
-
-        frontier.push(this.start);
-        explored.push(this.start);
-        cameFrom[this.start.i + "," + this.start.j] = null;
-        costSoFar[this.start.i + "," + this.start.j] = 0;
-
-        while (frontier.length > 0 && !frontier.includes(this.goal) && !explored.includes(this.goal)) {
-            // Fila pela ordem de custo acumulado (custo até o nó)
-            frontier.sort((a, b) => costSoFar[a.i + "," + a.j] - costSoFar[b.i + "," + b.j]);
-
-            this.exploredHistory.push(explored.slice());
-            let current = frontier.shift();
-            let neighbors = current.neighbors;
-
-            for (let i = 0; i < neighbors.length; i++) {
-                let neighbor = neighbors[i];
-                let newCost = costSoFar[current.i + "," + current.j] + neighbor.cost();
-
-                if (!explored.includes(neighbor) && (!costSoFar[neighbor.i + "," + neighbor.j] || newCost < costSoFar[neighbor.i + "," + neighbor.j])) {
-                    frontier.push(neighbor);
-                    explored.push(neighbor);
-                    cameFrom[neighbor.i + "," + neighbor.j] = current;
-                    costSoFar[neighbor.i + "," + neighbor.j] = newCost;
-                }
-            }
-
-            this.frontierHistory.push(frontier.slice());
-        }
-
-        let path = [];
-        let current = this.goal;
-        while (current != null) {
-            path.unshift(current);
-            current = cameFrom[current.i + "," + current.j];
-        }
-
-        this.path = path;
-    }
 }

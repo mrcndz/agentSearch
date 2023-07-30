@@ -73,6 +73,7 @@ class World {
     textSize(15);
   }
 
+
   createCells() {
     this.cells = new Array(this.ni);
 
@@ -81,7 +82,8 @@ class World {
     let qChance = 3;
     let oChance = 1;
     let sum = sChance + wChance + qChance + oChance;
-
+    let noiseScale = 0.3;
+    noiseSeed(random(1000));
 
     for (let i = 0; i < this.ni; i++) {
       this.cells[i] = new Array(this.nj);
@@ -93,23 +95,35 @@ class World {
 
         oChance = oChance + (this.numOfNeighborsOfType(i, j, "obstacle")) / 1000 * isEnableBtS.isSelected;
 
+        let noiseValue = noise(i * noiseScale, j * noiseScale);
+
         if (!isEnableBtO.isSelected) oChance = 0;
         if (!isEnableBtS.isSelected) sChance = 0;
         if (!isEnableBtW.isSelected) wChance = 0;
         if (!isEnableBtQ.isSelected) qChance = 0;
 
+        if (noiseValue < 0.5 && isEnableBtS.isSelected ) {
+          newType = "sand";
+        } else if (noiseValue < 0.6 && isEnableBtQ.isSelected) {
+          newType = "quagmire";
+        } else if(isEnableBtW.isSelected) {
+          newType = "water";
+        } else {
+          newType = "sand";
+        }
+
         sum = sChance + wChance + qChance + oChance;
         let n = random(sum);
 
-        if (n <= sChance) {
-          newType = "sand";
-        }
-        if (n > sChance && n <= sChance + wChance) {
-          newType = "water";
-        }
-        if (n > sChance + wChance && n <= sChance + wChance + qChance) {
-          newType = "quagmire";
-        }
+        // if (n <= sChance) {
+        //   newType = "sand";
+        // }
+        // if (n > sChance && n <= sChance + wChance) {
+        //   newType = "water";
+        // }
+        // if (n > sChance + wChance && n <= sChance + wChance + qChance) {
+        //   newType = "quagmire";
+        // }
         if (n > sChance + wChance + qChance) {
           newType = "obstacle";
         }

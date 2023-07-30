@@ -80,16 +80,27 @@ class Agent {
 
         let dx = x2 - x;
         let dy = y2 - y;
+        let positivex = dx > 0;
+        let positivey = dy > 0;
 
         let angle = atan2(dy, dx);
 
         this.heading = angle;
 
-        this.speed = 2/this.cells[this.i][this.j].cost();
+        this.speed = 8/this.cells[this.i][this.j].cost();
         console.log(this.speed);
 
         this.x = x + cos(angle) * this.speed;
         this.y = y + sin(angle) * this.speed;
+
+        if (this.x > x2 && positivex) {
+            this.x = x2; }
+        if (this.x < x2 && !positivex) {
+            this.x = x2; }
+        if (this.y > y2 && positivey) {
+            this.y = y2; }
+        if (this.y < y2 && !positivey) {
+            this.y = y2; }
 
         if (dist(this.x, this.y, x2, y2) < this.size / 2) {
             this.i = this.path[0].i;
