@@ -52,13 +52,14 @@ class Agent {
         // rectMode(CENTER);
         if (this.isGoal) {
             fill("white");
+            strokeWeight(2);
             stroke("red");
         } else {
             stroke("green");
+            strokeWeight(8);
             fill("white");
         }
 
-        strokeWeight(6);
         circle(x, y, this.size / 2);
         stroke("black");
     }
